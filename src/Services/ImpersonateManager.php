@@ -116,7 +116,7 @@ class ImpersonateManager
             session()->put($this->getSessionKey(), $from->getAuthIdentifier());
             session()->put($this->getSessionGuard(), $currentGuard);
             session()->put($this->getSessionGuardUsing(), $guardName);
-            session()->put($this->getSessionLeaveRedirectTo(), $leaveRedirectUrl);
+            cache()->put($this->getSessionLeaveRedirectTo(), $leaveRedirectUrl);
 
             $this->app['auth']->guard($currentGuard)->quietLogout();
             $this->app['auth']->guard($guardName)->quietLogin($to);
@@ -159,7 +159,7 @@ class ImpersonateManager
         session()->forget($this->getSessionKey());
         session()->forget($this->getSessionGuard());
         session()->forget($this->getSessionGuardUsing());
-        session()->forget($this->getSessionLeaveRedirectTo());
+        cache()->forget($this->getSessionLeaveRedirectTo());
     }
 
     public function getSessionKey(): string
@@ -184,7 +184,7 @@ class ImpersonateManager
 
     public function getSessionLeaveRedirectTo(): string
     {
-        return config('laravel-impersonate.session_leave_redirect_to');
+        return config('laravel-impersonate.session_leave_redirect_to') . '_' . $this->getImpersonatorId();
     }
 
     public function getTakeRedirectTo(): string
