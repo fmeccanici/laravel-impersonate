@@ -201,7 +201,7 @@ class ImpersonateManager
     public function getLeaveRedirectTo(): string
     {
         try {
-            if ($uri = session($this->getSessionLeaveRedirectTo())) {
+            if ($uri = cache($this->getSessionLeaveRedirectTo())) {
                 return $uri;
             }
 
