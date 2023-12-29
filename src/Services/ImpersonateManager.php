@@ -154,6 +154,9 @@ class ImpersonateManager
         return true;
     }
 
+    /**
+     * @throws Exception
+     */
     public function clear()
     {
         session()->forget($this->getSessionKey());
@@ -206,7 +209,7 @@ class ImpersonateManager
             }
 
             $uri = route(config('laravel-impersonate.leave_redirect_to'));
-        } catch (\InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException|Exception $e) {
             $uri = config('laravel-impersonate.leave_redirect_to');
         }
 
