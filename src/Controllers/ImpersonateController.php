@@ -35,18 +35,15 @@ class ImpersonateController extends Controller
 
         // Cannot impersonate yourself
         if ($id == $request->user()->getAuthIdentifier() && ($this->manager->getCurrentAuthGuardName() == $guardName)) {
-            dd('cannot impersonate yourself');
             abort(403);
         }
 
         // Cannot impersonate again if you're already impersonate a user
         if ($this->manager->isImpersonating()) {
-            dd('cannot impersonate again');
             abort(403);
         }
 
         if (!$request->user()->canImpersonate()) {
-            dd('user cannot impersonate');
             abort(403);
         }
 
@@ -72,7 +69,6 @@ class ImpersonateController extends Controller
     public function leave()
     {
         if (!$this->manager->isImpersonating()) {
-            dd('not impersonating');
             abort(403);
         }
 
