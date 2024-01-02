@@ -33,6 +33,8 @@ class ImpersonateController extends Controller
     {
         $guardName = $guardName ?? $this->manager->getDefaultSessionGuard();
 
+        dd($request);
+
         // Cannot impersonate yourself
         if ($id == $request->user()->getAuthIdentifier() && ($this->manager->getCurrentAuthGuardName() == $guardName)) {
             dd($request, $id, $request->user()->getAuthIdentifier(), $this->manager->getCurrentAuthGuardName(), $guardName);
