@@ -29,7 +29,7 @@ class ImpersonateController extends Controller
      * @return  RedirectResponse
      * @throws  \Exception
      */
-    public function take(Request $request)
+    public function take(Request $request, $id, $guardName = null)
     {
         $id = $request->get('id');
         $guardName = $request->get('guardName');
