@@ -31,9 +31,6 @@ class ImpersonateController extends Controller
      */
     public function take(Request $request, $id, $guardName = null)
     {
-        $id = $request->get('id');
-        $guardName = $request->get('guardName');
-
         $guardName = $guardName ?? $this->manager->getDefaultSessionGuard();
 
         // Cannot impersonate yourself
