@@ -33,18 +33,20 @@ class ImpersonateController extends Controller
     {
         $guardName = $guardName ?? $this->manager->getDefaultSessionGuard();
 
+        $takeRedirect = $this->manager->getTakeRedirectTo();
+
         // Cannot impersonate yourself
         if ($id == $request->user()->getAuthIdentifier() && ($this->manager->getCurrentAuthGuardName() == $guardName)) {
-            abort(403);
+            return redirect()->to($takeRedirect);
         }
 
         // Cannot impersonate again if you're already impersonate a user
         if ($this->manager->isImpersonating()) {
-            abort(403);
+            return redirect()->to($takeRedirect);
         }
 
         if (!$request->user()->canImpersonate()) {
-            abort(403);
+            return redirect()->to($takeRedirect);
         }
 
         $userToImpersonate = $this->manager->findUserById($id, $guardName);
@@ -53,7 +55,6 @@ class ImpersonateController extends Controller
 
         if ($userToImpersonate->canBeImpersonated()) {
             if ($this->manager->take($request->user(), $userToImpersonate, $guardName, $leaveRedirectUrl)) {
-                $takeRedirect = $this->manager->getTakeRedirectTo();
                 if ($takeRedirect !== 'back') {
                     return redirect()->to($takeRedirect);
                 }
